@@ -24,6 +24,9 @@ project "Hazel"
     targetdir ("bin/" .. outputdir .. "/%{prj.name}")
     objdir ("bin-int/" .. outputdir .. "/%{prj.name}")
 
+    pchheader "hzpch.h" -- <Project> -> Properties -> C/C++ -> Precompiled Headers
+    pchsource "Hazel/src/hzpch.cpp"
+
     files 
     {
         "%{prj.name}/src/**.h", -- Where to find the files for this project. Double ** searches children within that path.

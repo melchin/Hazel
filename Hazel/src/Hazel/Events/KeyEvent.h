@@ -1,7 +1,6 @@
 #pragma once
 
 #include "Event.h"
-#include <sstream>
 
 namespace Hazel {
 	// KeyEvent keeps the logic/variables that remain the same between
