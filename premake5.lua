@@ -34,6 +34,7 @@ project "Hazel"
     {
         -- $(SolutionDir)Hazel\vendor\spdlog\include; From VS 
         -- <Project> -> Properties -> C/C++ -> General -> Additional Include Directories
+        "%{prj.name}/src",
         "%{prj.name}/vendor/spdlog/include"
     }
 

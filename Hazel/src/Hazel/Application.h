@@ -1,6 +1,6 @@
 #pragma once
 #include "Core.h"
-
+#include "Events/Event.h"
 namespace Hazel {
 	/*
 	* Prefixed with the HAZEL_API macro which allows us to dllexport or dllimport this
