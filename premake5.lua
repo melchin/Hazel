@@ -16,6 +16,12 @@ workspace "Hazel" -- Solution Name
 -- cfg.architecture - x64, x86, etc.
 outputdir = "%{cfg.buildcfg}-%{cfg.system}-%{cfg.architecture}"
 
+-- Include directories relative to root folder (solution directory)
+IncludeDir = {}
+IncludeDir["GLFW"] = "Hazel/vendor/GLFW/include"
+
+include "Hazel/vendor/GLFW" -- Includes the premake5.lua file that we created in our Fork of GLFW
+
 project "Hazel"
     location "Hazel" -- So we can reference from Hazel project and not from solution directory
     kind "SharedLib" -- Type of file that this is (DLL)
@@ -38,7 +44,14 @@ project "Hazel"
         -- $(SolutionDir)Hazel\vendor\spdlog\include; From VS 
         -- <Project> -> Properties -> C/C++ -> General -> Additional Include Directories
         "%{prj.name}/src",
-        "%{prj.name}/vendor/spdlog/include"
+        "%{prj.name}/vendor/spdlog/include",
+        "%{IncludeDir.GLFW}"
+    }
+
+    links
+    {
+        "GLFW", -- Hazel is dependant on GLFW. Hazel References GLFW
+        "opengl32.lib" -- Hazel is dependant on opengl32.lib
     }
 
     filter "system:windows" -- Project Configuration for Windows platform specifically
@@ -59,14 +72,17 @@ project "Hazel"
     
     filter "configurations:Debug"
          defines "HZ_DEBUG"
+         buildoptions "/MDd"
          symbols "On"
     
     filter "configurations:Release"
          defines "HZ_RELEASE"
+         buildoptions "/MD"
          optimize "On"
 
     filter "configurations:Dist"
          defines "HZ_DIST"
+         buildoptions "/MD"
          optimize "On"
 
 
@@ -92,7 +108,7 @@ project "Sandbox"
 
 	links
 	{
-		"Hazel"
+		"Hazel" -- Sandbox is dependant on Hazel. Sandbox References Hazel
 	}
 
 	filter "system:windows"
@@ -107,12 +123,15 @@ project "Sandbox"
 
 	filter "configurations:Debug"
 		defines "HZ_DEBUG"
+        buildoptions "/MDd"
 		symbols "On"
 
 	filter "configurations:Release"
 		defines "HZ_RELEASE"
+        buildoptions "/MD"
 		optimize "On"
 
 	filter "configurations:Dist"
 		defines "HZ_DIST"
+        buildoptions "/MD"
 		optimize "On" 
