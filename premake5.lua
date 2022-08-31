@@ -19,8 +19,10 @@ outputdir = "%{cfg.buildcfg}-%{cfg.system}-%{cfg.architecture}"
 -- Include directories relative to root folder (solution directory)
 IncludeDir = {}
 IncludeDir["GLFW"] = "Hazel/vendor/GLFW/include"
+IncludeDir["Glad"] = "Hazel/vendor/Glad/include"
 
 include "Hazel/vendor/GLFW" -- Includes the premake5.lua file that we created in our Fork of GLFW
+include "Hazel/vendor/Glad" -- Includes the premake5.lua file that we created in our copy of Glad
 
 project "Hazel"
     location "Hazel" -- So we can reference from Hazel project and not from solution directory
@@ -45,12 +47,14 @@ project "Hazel"
         -- <Project> -> Properties -> C/C++ -> General -> Additional Include Directories
         "%{prj.name}/src",
         "%{prj.name}/vendor/spdlog/include",
-        "%{IncludeDir.GLFW}"
+        "%{IncludeDir.GLFW}",
+        "%{IncludeDir.Glad}"
     }
 
     links
     {
         "GLFW", -- Hazel is dependant on GLFW. Hazel References GLFW
+        "Glad", -- Hazel is dependant on Glad. Hazel References Glad
         "opengl32.lib" -- Hazel is dependant on opengl32.lib
     }
 
@@ -62,7 +66,8 @@ project "Hazel"
         defines -- <Project> -> Properties -> C/C++ -> Preprocessor -> Preprocessor Definitions
         {
             "HZ_PLATFORM_WINDOWS",
-            "HZ_BUILD_DLL"
+            "HZ_BUILD_DLL",
+            "GLFW_INCLUDE_NONE"
         }
          
         postbuildcommands --https://github.com/premake/premake-core/wiki/postbuildcommands
